@@ -5,4 +5,5 @@ package me.jlucas.nemo.Utils;
  */
 public class IntentCodes {
     public static final int OPEN_CAMERA = 1000;
+    public static final int PROMPT_CATEGORY = 1001;
 }

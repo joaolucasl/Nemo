@@ -8,8 +8,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 
 /**
@@ -18,7 +16,7 @@ import java.security.NoSuchAlgorithmException;
 public class ImageUtils {
     public static Uri newImageURI() {
         String filePath;
-        String folderName = "NemoImages";
+        String folderName = "NemoImages/";
         String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + folderName;
         String currentTime = String.valueOf(System.currentTimeMillis());
         String imageName;
