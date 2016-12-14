@@ -1,6 +1,8 @@
 package me.jlucas.nemo.Activities;
 
+import android.content.Intent;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -13,11 +15,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import io.realm.Realm;
 import me.jlucas.nemo.Adapters.SectionsPagerAdapter;
 import me.jlucas.nemo.Fragments.MainFragment;
 import me.jlucas.nemo.R;
+import me.jlucas.nemo.Utils.ImageUtils;
+import me.jlucas.nemo.Utils.IntentCodes;
 
 public class MainActivity extends AppCompatActivity implements MainFragment.OnFragmentInteractionListener {
 
@@ -35,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+
+    private Uri imageFileURI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +64,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                openCameraApp();
             }
         });
 
@@ -90,6 +96,14 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
     @Override
     public void onFragmentInteraction(Uri uri) {
         return;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == IntentCodes.OPEN_CAMERA && resultCode == RESULT_OK) {
+            System.out.println(this.imageFileURI);
+        }
     }
 
     private void linkTabsWithFragments() {
@@ -134,5 +148,12 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
             }
         });
 
+    }
+
+    private void openCameraApp() {
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        this.imageFileURI = ImageUtils.newImageURI();
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, this.imageFileURI);
+        startActivityForResult(cameraIntent, IntentCodes.OPEN_CAMERA);
     }
 }
