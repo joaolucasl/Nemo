@@ -1,14 +1,5 @@
 apply plugin: 'com.android.application'
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath "io.realm:realm-gradle-plugin:2.2.1"
-    }
-}
-
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
@@ -37,5 +28,3 @@ dependencies {
     compile 'com.facebook.fresco:fresco:0.14.1'
     compile 'commons-codec:commons-codec:1.10'
 }
-
-apply plugin: 'realm-android'

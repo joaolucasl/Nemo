@@ -20,12 +20,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Gallery;
-
 import com.facebook.drawee.backends.pipeline.Fresco;
-
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 import me.jlucas.nemo.Adapters.ImageAdapter;
 import me.jlucas.nemo.Adapters.SectionsPagerAdapter;

@@ -19,9 +19,6 @@ import android.widget.GridView;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.realm.Realm;
-import io.realm.RealmList;
-import io.realm.RealmResults;
 import me.jlucas.nemo.Adapters.ImageAdapter;
 import me.jlucas.nemo.Models.Image;
 import me.jlucas.nemo.R;

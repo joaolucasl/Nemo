@@ -7,8 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
 import me.jlucas.nemo.Utils.DBHelper;
 
 /**

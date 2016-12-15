@@ -12,11 +12,10 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 
-import io.realm.Realm;
+
 import me.jlucas.nemo.R;
 
 public class CategoryPromptActivity extends AppCompatActivity {
-    Realm realm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
