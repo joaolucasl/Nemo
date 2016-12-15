@@ -1,13 +1,27 @@
 package me.jlucas.nemo.Fragments;
 
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmList;
+import io.realm.RealmResults;
+import me.jlucas.nemo.Adapters.ImageAdapter;
+import me.jlucas.nemo.Models.Image;
 import me.jlucas.nemo.R;
+import me.jlucas.nemo.Utils.DBHelper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,43 +29,38 @@ import me.jlucas.nemo.R;
  * create an instance of this fragment.
  */
 public class GalleryFragment extends Fragment {
+    ImageAdapter adapter;
 
     public GalleryFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment GalleryFragment.
-     */
     // TODO: Rename and change types and number of parameters
     public static GalleryFragment newInstance() {
         GalleryFragment fragment = new GalleryFragment();
-        //Bundle args = new Bundle();
-        //args.putString(ARG_PARAM1, param1);
-        //args.putString(ARG_PARAM2, param2);
-        //fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //if (getArguments() != null) {
-        //    mParam1 = getArguments().getString(ARG_PARAM1);
-        //    mParam2 = getArguments().getString(ARG_PARAM2);
-        //}
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_gallery, container, false);
-    }
+        View view = inflater.inflate(R.layout.fragment_gallery, container, false);
 
+        List<Image> listImages = Image.getAllImages(getContext());
+        RecyclerView galleryGrid = (RecyclerView) view.findViewById(R.id.galleryGrid);
+        galleryGrid.setHasFixedSize(true);
+
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+        galleryGrid.setLayoutManager(layoutManager);
+
+        this.adapter = new ImageAdapter(getContext(), listImages);
+        galleryGrid.setAdapter(this.adapter);
+
+        return view;
+    }
 }

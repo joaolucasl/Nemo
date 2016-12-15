@@ -1,30 +1,40 @@
 package me.jlucas.nemo.Activities;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Gallery;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
+import me.jlucas.nemo.Adapters.ImageAdapter;
 import me.jlucas.nemo.Adapters.SectionsPagerAdapter;
+import me.jlucas.nemo.Fragments.GalleryFragment;
 import me.jlucas.nemo.Fragments.MainFragment;
 import me.jlucas.nemo.Models.Category;
+import me.jlucas.nemo.Models.Image;
 import me.jlucas.nemo.R;
+import me.jlucas.nemo.Utils.DBHelper;
 import me.jlucas.nemo.Utils.ImageUtils;
 import me.jlucas.nemo.Utils.IntentCodes;
 
@@ -134,21 +144,6 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
     }
 
     private void setupDB() {
-        Realm.init(this);
-        RealmConfiguration dbConfig = new RealmConfiguration.Builder().initialData(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                Category Cat1 = realm.createObject(Category.class);
-                Cat1.setId(1).setNome("Feliz");
-
-                Category Cat2 = realm.createObject(Category.class);
-                Cat2.setId(2).setNome("Verão");
-
-                Category Cat3 = realm.createObject(Category.class);
-                Cat3.setId(3).setNome("TBT");
-            }
-        }).build();
-        Realm.setDefaultConfiguration(dbConfig);
     }
 
     @Override
@@ -158,7 +153,22 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
             System.out.println(this.imageFileURI);
             promptForCategory();
         } else if (requestCode == IntentCodes.PROMPT_CATEGORY && resultCode == RESULT_OK) {
-            System.out.println(data.getExtras().getString("category_name"));
+            String categoryName = data.getExtras().getString("CATEGORY_NAME");
+            SQLiteDatabase db = new DBHelper(this).getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put("filePath", this.imageFileURI.toString());
+            values.put("category", categoryName);
+
+            long newImageID = db.insert("images", null, values);
+
+            RecyclerView galleryGrid = (RecyclerView) findViewById(R.id.galleryGrid);
+            ImageAdapter adapter = (ImageAdapter) galleryGrid.getAdapter();
+            if(galleryGrid != null) {
+                adapter.updateData(Image.getAllImages(getApplicationContext()));
+            } else {
+                Log.d("DEBUG", "Couldn't find fragment to refresh");
+            }
         }
     }
 
