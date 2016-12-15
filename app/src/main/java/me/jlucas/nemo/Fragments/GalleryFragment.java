@@ -7,9 +7,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.GridView;
 
 import java.util.ArrayList;
@@ -52,7 +56,7 @@ public class GalleryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
 
         List<Image> listImages = Image.getAllImages(getContext());
-        RecyclerView galleryGrid = (RecyclerView) view.findViewById(R.id.galleryGrid);
+        final RecyclerView galleryGrid = (RecyclerView) view.findViewById(R.id.galleryGrid);
         galleryGrid.setHasFixedSize(true);
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
@@ -60,6 +64,31 @@ public class GalleryFragment extends Fragment {
 
         this.adapter = new ImageAdapter(getContext(), listImages);
         galleryGrid.setAdapter(this.adapter);
+
+        EditText categorySearch = (EditText) view.findViewById(R.id.categorySearchBox);
+        categorySearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence text, int i, int i1, int i2) {
+                ImageAdapter adapter = (ImageAdapter) galleryGrid.getAdapter();
+                Log.d("IMAGE_SEARCH", text.toString());
+                if (text.length() > 0){
+                    List<Image> searchImages = Image.getImagesByCategory(text.toString(), getContext());
+                    adapter.updateData(searchImages);
+                } else {
+                    adapter.updateData(Image.getAllImages(getContext()));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         return view;
     }

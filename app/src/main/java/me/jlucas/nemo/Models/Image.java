@@ -61,7 +61,7 @@ public class Image {
 
     public static List<Image> getImagesByCategory(String category, Context c){
         SQLiteDatabase db = new DBHelper(c).getReadableDatabase();
-        Cursor query = db.rawQuery("SELECT * FROM images WHERE category = ? ORDER BY id DESC", new String[] {category});
+        Cursor query = db.rawQuery("SELECT * FROM images WHERE category LIKE ? ORDER BY id DESC", new String[] {"%" + category + "%"});
         List<Image> listImages = new ArrayList<>();
 
         while (query.moveToNext()) {

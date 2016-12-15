@@ -1,14 +1,27 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragmentFrameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:stretchColumns="*"
     tools:context=".Fragments.GalleryFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/galleryGrid"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        />
+    <TableRow>
+        <EditText
+            android:id="@+id/categorySearchBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Busque por categoria"
+            android:drawableLeft="@android:drawable/ic_menu_search"/>
+    </TableRow>
 
-</FrameLayout>
+    <TableRow>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/galleryGrid"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            />
+    </TableRow>
+
+</TableLayout>
